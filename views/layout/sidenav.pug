@@ -1,0 +1,6 @@
+aside.navigation(ng-controller="naviCtrl")
+
+    i.ion-ios-home(ng-click="goToDashboard()", ng-class="{ active: isActive('/')}")
+    i.ion-ios-musical-notes(ng-click="goToSongs()", ng-class="{ active: isActive('/songs')}")
+    i.fa.fa-newspaper-o(ng-click="goToNews()", ng-class="{ active: isActive('/news')}")
+    i.ion.ion-ios-cog-outline(ng-click="goToSettings()", ng-class="{ active: isActive('/settings')}")

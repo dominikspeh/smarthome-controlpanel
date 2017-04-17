@@ -1,0 +1,95 @@
+.dashboard(ng-controller="settingsCtrl")
+    .row
+        .col.box.align-items-center.text-center(ng-class="{'active' : activeTab == 'Sockets' }")
+            h1.ion-ios-bolt
+            h2 Steckdosen
+            span.btn.btn-warning(ng-click="editSockets()") Edit
+            span.btn.btn-primary(ng-click="addSocket()") Add
+
+        .col.box.align-items-center.text-center(ng-click="editLocation()", ng-class="{'active' : activeTab == 'Location' }")
+            h1.ion-ios-location
+            h2 Standort
+            p {{user.location[0].city}}
+        .col.box.align-items-center.text-center(ng-click="editGas()", ng-class="{'active' : activeTab == 'Gas' }")
+            h1.ion-model-s
+            h2 Sprit
+            p Typ: {{user.gas[0].type}}
+        .col.box.align-items-center.text-center
+
+
+    .row(ng-show="activeTab == 'Sockets'")
+        .col.box.align-items-center
+            h5 Steckdosen verwalten
+            table.table(style="margin-top:20px")
+                thead
+                    tr
+                        th Name
+                        th Code
+                        th
+                tbody
+                    tr(ng-repeat="socket in sockets")
+                        td {{socket.name}}
+                        td {{socket.code}}
+                        td
+                            span.btn.btn-warning(ng-click="editSocket(socket)") edit
+                            span.btn.btn-danger(ng-click="removeSocket(socket)") x
+
+    .row(ng-show="activeTab == 'Location'")
+        .col.box
+            h5 Standort bearbeiten
+            form(novalidate, name="location" ng-submit="newLocation()")
+                .form-group
+                    label(for='inputOrt') Ort
+                    input#inputOrt.form-control(type='text', placeholder='', ng-model="user.location[0].formattedAddress")
+                    small#ortHelp.form-text.text-muted Z.B. Haupstraße 12, 72488 Sigmaringen
+
+                button.btn.btn-primary(type='submit') Location ändern
+
+    .row(ng-show="activeTab == 'Gas'")
+        .col.box
+            h5 Spritpreiseinstellungen
+            form(novalidate, name="location" ng-submit="changeGasMode()")
+                .form-group
+                    label(for='inputGas') Typ
+                    input#inputGas.form-control(type='text', placeholder='', ng-model="newGas[0].type")
+                    small#gasHelp.form-text.text-muted e5, e10 oder diesel
+                .form-group
+                    label(for='inputRadius') Radius
+                    input#inputRadius.form-control(type='number', placeholder='', ng-model="newGas[0].radius")
+                    small#radiusHelp.form-text.text-muted Radius in km
+
+                button.btn.btn-primary(type='submit') Einstellungen ändern
+
+    script#addSocket(type='text/ng-template')
+        form(novalidate, name="addSocket" ng-submit="newSocket(socket)")
+            .form-group
+                label(for='inputName') Beschreibung
+                input#inputName.form-control(type='text', placeholder='', ng-model="socket.name")
+                small#nameHelp.form-text.text-muted Angeben, was an die Steckdose angeschlossen ist
+            .form-group
+                label(for='inputKennung') Steckdosenkennung
+                input#inputKennung.form-control(type='text', placeholder='', ng-model="socket.code")
+                small#emailHelp.form-text.text-muted Beispielsweise 10111 1
+            button.btn.btn-primary(type='submit') Hinzufügen
+
+    script#editSocket(type='text/ng-template')
+        form(novalidate, name="editSocket" ng-submit="saveSocket(edit)")
+            .form-group
+                label(for='inputEditName') Beschreibung
+                input#inputEditName.form-control(type='text', placeholder='', ng-model="edit.name")
+            .form-group
+                label(for='inputEditKennung') Steckdosenkennung
+                input#inputEditKennung.form-control(type='text', placeholder='', ng-model="edit.code")
+            button.btn.btn-primary(type='submit') Hinzufügen
+
+    script#removeSocket(type='text/ng-template')
+        h5 {{rm.name}} wirklich löschen?
+        p Dieser Vorgang kann nicht widerrufen werden!
+        span.btn.btn-danger(ng-click="deleteSocket(rm)") löschen
+
+    script#submitLocation(type='text/ng-template')
+        h5 Ist die Eingabe korrekt?
+        p {{newLocation.city.formattedAddress}}
+        span.btn(ng-click="noSubmit()") abbrechen
+        span.btn.btn-warning(ng-click="submitLocation()") bestätigen
+

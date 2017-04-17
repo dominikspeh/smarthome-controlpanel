@@ -1,0 +1,57 @@
+.dashboard.text-center(ng-controller="dashboardCtrl")
+    .row
+        .col.box.align-items-center
+            h1.ion-ios-partlysunny
+            h2 {{temperature}}°C
+            p.small Wohnung Crailsheim
+                p
+                    strong Wohzimmer
+
+        .col.box
+            h1.ion-ios-partlysunny
+            h2 {{temperature}}°C
+            p.small Wohnung Crailsheim
+            p
+                strong Badezimmer
+
+        .col-6.box
+            h4 Wetter
+            .row.weather
+                .col(ng-repeat="day in weather" ng-if="$even && $index < 9")
+                    p.lead  {{day.dt * 1000 | date:'EEE'}}
+
+                    i.owf(class="owf-{{day.weather[0].id}}-{{day.sys.pod}}")
+                    p.time {{day.dt * 1000 | date:'HH:mm'}} Uhr
+                    p
+                        strong {{day.main.temp | number : 0}}°C
+
+
+    .row
+        .col.box.coffee
+            h1.ion-coffee
+            p.small Kaffeemaschine
+                p
+                    strong Aus
+
+        .col-6.box
+            h4 Spritpreis {{gas.location}} ({{gas.type}})
+            .row.weather
+                .col(ng-repeat="location in gas.gasstations.stations" ng-if="$index < 3")
+                    p.lead {{location.brand  ? location.brand : "-"}}
+                    p.time {{location.place}}
+                    p
+                        strong {{location.price | number:2}}€
+
+    .row.sockets
+        .col.box(ng-repeat="socket in sockets", ng-class="{'active': socket.mode == 1}", ng-click="changeMode(socket)")
+            p.lead {{socket.name}}
+            .status.off(ng-if="socket.mode == 0")
+                i.ion-ios-bolt-outline
+                p
+                    strong Aus
+
+            .status.on(ng-if="socket.mode == 1")
+                i.ion-ios-bolt
+                p
+                    strong An
+

@@ -1,0 +1,37 @@
+.dashboard(ng-controller="songCtrl")
+    .row.flex-column
+        .col.box.songs(style="min-height:520px", ng-class="{'smallList' : activePlayer }")
+            h1 Songs
+            ul.list-group(style="margin-bottom:20px")
+            li.list-group-item(ng-repeat="song in songs")
+                i(ng-class="myPlayer.playing && myPlayer.currentTrack-1 == $index ? 'ion-ios-play' : 'ion-ios-pause'")
+                span.title(ng-click="playSong($index)") {{song.name}}
+
+
+        .col.box.songs(style="min-height:0", ng-show="activePlayer", ng-class="{'open' : activePlayer }")
+            audio(player-control='myPlayer', playlist='currentPlaylist', media-player='')
+            .btn.btn-alert.stopAll(ng-click="stopAll()") Close
+
+            .row
+                .col
+                    figure.cropped
+                        img.cover(ng-src="{{currentThumb}}")
+                .col.text-center
+                    h5 {{currentTitle}}
+
+                    .controls.text-center
+                        .btn(ng-click='myPlayer.prev()')
+                            i.fa.fa-step-backward
+                            span Prev
+
+                        .btn(ng-click='playSong(myPlayer.currentTrack-1)')
+                            i.fa(ng-class="{ 'fa-pause': myPlayer.playing, 'fa-play': !myPlayer.playing }")
+
+                        .btn(ng-click='myPlayer.next()')
+                            span Next
+                            i.fa.fa-step-forward
+
+
+
+
+

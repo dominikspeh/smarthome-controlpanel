@@ -1,0 +1,28 @@
+.dashboard(ng-controller="newsCtrl")
+    .row
+        .col.box(ng-show="area == 'sport'")
+            h1 VfB News
+            ul.list-group(style="margin-bottom:20px")
+                    p
+
+            #accordion(role='tablist', aria-multiselectable='true')
+                .card(ng-repeat="news in vfb")
+                    .card-header(role='tab')
+                        a(data-toggle='collapse', data-parent='#accordion', data-target='#vfb{{$index}}', aria-expanded='false', aria-controls='collapseOne')
+                                | {{news.title}}
+                    .collapse(id="vfb{{$index}}",role='tabpanel', aria-labelledby='headingOne')
+                        .card-block
+                            p {{news.description | htmlToPlaintext}}
+        .col.box
+            h1 Sport1
+            ul.list-group(style="margin-bottom:20px")
+                p
+
+            #accordion2(role='tablist', aria-multiselectable='true')
+                .card(ng-repeat="news in sport1")
+                    .card-header(role='tab')
+                        a(data-toggle='collapse', data-parent='#accordion', data-target='#sport1{{$index}}', aria-expanded='false', aria-controls='collapseOne')
+                            | {{news.title}}
+                    .collapse(id="sport1{{$index}}",role='tabpanel', aria-labelledby='headingOne')
+                        .card-block
+                            p {{news.description | htmlToPlaintext}}
